@@ -1,8 +1,36 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { useRouter } from "next/dist/client/router";
+import React, { ComponentType, useEffect } from "react";
+import { MoralisProvider } from "react-moralis";
+import Layout from "../components/Layout";
+import { motion } from "framer-motion";
+const moralisAppID = process.env.NEXT_PUBLIC_MORALIS_APP_ID || "";
+const moralisServerUrl = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL || "";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const MyApp = ({
+  Component,
+  pageProps,
+}: {
+  Component: ComponentType<AppProps>;
+  pageProps: AppProps;
+}) => {
+  const router = useRouter();
 
-export default MyApp
+  return (
+    <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl}>
+      <Layout>
+        <motion.div
+          key={router.route}
+          initial={{ opacity: 0.1, translateX: 50  }}
+          animate={{ opacity: 1, translateX: 0}}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Component {...pageProps} />
+        </motion.div>
+      </Layout>
+    </MoralisProvider>
+  );
+};
+
+export default MyApp;
