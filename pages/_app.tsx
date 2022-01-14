@@ -1,7 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/dist/client/router";
-import React, { ComponentType, useEffect } from "react";
+import { ThemeProvider } from "next-themes";
+import React, { ComponentType } from "react";
 import { MoralisProvider } from "react-moralis";
 import Layout from "../components/Layout";
 import { motion } from "framer-motion";
@@ -19,16 +20,18 @@ const MyApp = ({
 
   return (
     <MoralisProvider appId={moralisAppID} serverUrl={moralisServerUrl}>
-      <Layout>
-        <motion.div
-          key={router.route}
-          initial={{ opacity: 0.1, translateX: 50  }}
-          animate={{ opacity: 1, translateX: 0}}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <Component {...pageProps} />
-        </motion.div>
-      </Layout>
+      <ThemeProvider>
+        <Layout>
+          <motion.div
+            key={router.route}
+            initial={{ opacity: 0.1, translateX: 50 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Component {...pageProps} />
+          </motion.div>
+        </Layout>
+      </ThemeProvider>
     </MoralisProvider>
   );
 };
