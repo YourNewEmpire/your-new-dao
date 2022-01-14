@@ -1,5 +1,5 @@
 const hre = require("hardhat");
-const { utils, Signer, Transaction } = require("ethers");
+// const { utils, Signer, Transaction } = require("ethers");
 async function main() {
   //const [seller, buyer ] = await hre.ethers.getSigners();
 
@@ -7,7 +7,6 @@ async function main() {
   const dao = await Dao.deploy();
 
   await dao.deployed();
-  //await dao.connect(buyer).buyOwnership()
   console.log("Greeter deployed to:", dao.address);
 }
 
