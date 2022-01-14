@@ -37,7 +37,7 @@ module.exports = {
         "9xl": "7rem",
       },
       fontFamily: {
-        body: ["Montserrat"]
+        body: ["Be Vietnam Pro"],
       },
       backgroundImage: {
         "about-card": "url('/aboutcard.png')",
@@ -59,6 +59,36 @@ module.exports = {
         amber: colors.amber,
         fuchsia: colors.fuchsia,
         moralis: "#c5fa00",
+        'th-background': 'var(--background)',
+        'th-background-secondary': 'var(--background-secondary)',
+        'th-foreground': 'var(--foreground)',
+        'th-primary-dark': 'var(--primary-dark)',
+        'th-primary-medium': 'var(--primary-medium)',
+        'th-primary-light': 'var(--primary-light)',
+
+        'th-accent-dark': 'var(--accent-dark)',
+        'th-accent-medium': 'var(--accent-medium)',
+        'th-accent-light': 'var(--accent-light)',
+
+        'th-accent-success': 'var(--accent-success)',
+        'th-accent-success-light': 'var(--accent-success-light)',
+        'th-accent-success-medium': 'var(--accent-success-medium)',
+        'th-accent-success-dark': 'var(--accent-success-dark)',
+
+        'th-accent-failure': 'var(--accent-failure)',
+        'th-accent-failure-light': 'var(--accent-failure-light)',
+        'th-accent-failure-medium': 'var(--accent-failure-medium)',
+        'th-accent-failure-dark': 'var(--accent-failure-dark)',
+
+        'th-accent-info': 'var(--accent-info)',
+        'th-accent-info-light': 'var(--accent-info-light)',
+        'th-accent-info-medium': 'var(--accent-info-medium)',
+        'th-accent-info-dark': 'var(--accent-info-dark)',
+
+        'th-accent-warning': 'var(--accent-warning)',
+        'th-accent-warning-light': 'var(--accent-warning-light)',
+        'th-accent-warning-medium': 'var(--accent-warning-medium)',
+        'th-accent-warning-dark': 'var(--accent-warning-dark)',
       },
       keyframes: {
         pop: {
