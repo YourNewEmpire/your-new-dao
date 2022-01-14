@@ -17,17 +17,17 @@ const Layout = ({ children }: Childs) => {
   }, [router.route]);
 
   return (
-    <div className=" min-h-full bg-slate-800 bg-blend-difference">
+    <div className=" min-h-full bg-th-background ">
       <Head>
         <title>Your New Dao </title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap"
           rel="stylesheet"
         />
       </Head>
       <Nav />
-      <div className=" xl:mx-20 sm:mx-6 mx-4 justify-center items-center text-slate-300   ">
+      <div className=" xl:mx-20 sm:mx-6 mx-4 lg:p-2 xl:p-12 justify-center items-center bg-th-foreground text-slate-300 font-body shadow-2xl shadow-cyan-600 ">
         {children}
       </div>
     </div>
