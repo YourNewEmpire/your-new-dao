@@ -56,7 +56,10 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
 
     // Ownership
 
-    function buyOwnership() public payable {
+    function buyOwnership(string memory newOwnerName, string memory newDaoName)
+        public
+        payable
+    {
         require(msg.value >= salePrice, "Not enough pay, Chad.");
         require(contractSold == false, "SOLD. Find another DAO to purchase.");
         // Ensure my ownership is false
@@ -65,6 +68,9 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
         owners.push(msg.sender);
         // Mark as sold
         contractSold = true;
+
+        ownerName = newOwnerName;
+        ownerContractName = newDaoName;
         emit contractSaleEvent(msg.sender);
         // initial mint of semi-fungible COINS
     }
