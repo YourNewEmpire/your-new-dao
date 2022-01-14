@@ -11,13 +11,13 @@ const Nav = () => {
       <nav
         className="
                   flex items-center justify-around p-6 space-x-16 mx-0 xl:mx-12
-                    text-center text-5xl text-slate-300 font-semibold
+                    text-center text-5xl text-slate-300 font-body font-extrabold
                   "
       >
         <Link passHref href="/">
           <motion.a
             className={`p-2 rounded-lg hover:shadow-lg
-            ${router.route !== "/" && "bg-indigo-700 bg-opacity-20  "}
+            ${router.route !== "/" && "bg-cyan-800  "}
             ${
               router.route === "/" && "bg-indigo-800 shadow-md"
             }
@@ -29,12 +29,12 @@ const Nav = () => {
           </motion.a>
         </Link>
         {navItems.map((item, index) => (
-          <Link key={index} href={item.link}>
+          <Link passHref key={index} href={item.link}>
             <motion.a
               whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3 }}
               className={`
-                ${router.route !== item.link && "bg-indigo-700 bg-opacity-20  "}
+                ${router.route !== item.link && "bg-cyan-800 "}
                 ${router.route === item.link && "bg-indigo-800 shadow-md"}
                 p-6 w-full  h-full rounded-lg 
                 items-center justify-center  hover:cursor-pointer hover:shadow-lg
