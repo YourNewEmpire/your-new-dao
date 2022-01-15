@@ -37,12 +37,12 @@ const ContractCard = ({
                     rel="noopener noreferrer"
                     target="blank"
                     href={cmsDao.addressUrl}
-                    className="overflow-hidden overflow-ellipsis whitespace-nowrap p-4 w-1/2 flex flex-row justify-center items-center rounded-tr-md rounded-bl-md transition duration-300 ease-in-out hover:bg-cyan-800"
+                    className="overflow-hidden overflow-ellipsis whitespace-nowrap p-2 xl:p-4 w-1/2 flex flex-row justify-center items-center rounded-tr-md rounded-bl-md transition duration-300 ease-in-out hover:bg-cyan-800"
                 >
                     View On PolygonScan
                 </a>
                 <Link href={`/marketplace/${cmsDao.addressSlug}`}>
-                    <a className=" p-4 w-1/2 flex flex-row justify-center items-center rounded-tl-md rounded-br-md transition duration-300 ease-in-out hover:bg-cyan-800">
+                    <a className=" p-2 xl:p-4 w-1/2 flex flex-row justify-center items-center rounded-tl-md rounded-br-md transition duration-300 ease-in-out hover:bg-cyan-800">
                         View Here
                     </a>
                 </Link>
