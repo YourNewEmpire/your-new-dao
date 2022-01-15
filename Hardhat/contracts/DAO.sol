@@ -20,8 +20,8 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
         );
         _;
     }
-
-    string public ownerContractName;
+    // Contract name and ownerName (human string ie. "John Doe" )
+    string public name;
     string public ownerName;
     // Token ID state for owners to set
     mapping(string => uint256) public tokenIdMapping;
@@ -42,16 +42,18 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
         );
         _;
     }
-
     // Typing for the Proposal object
     struct Proposal {
         bytes32 name; // short name (up to 32 bytes),
         uint256 voteCount; // number of accumulated votes, should use counter util in future
     }
 
-    constructor() ERC1155("") {
+    // Initialise EIP712
+    constructor(string memory name_) ERC1155("") {
         //Set contract status as unsold
         contractSold = false;
+        name = name_;
+        _initializeEIP712(name_);
     }
 
     // Ownership
@@ -70,7 +72,7 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
         contractSold = true;
 
         ownerName = newOwnerName;
-        ownerContractName = newDaoName;
+        name = newDaoName;
         emit contractSaleEvent(msg.sender);
         // initial mint of semi-fungible COINS
     }
@@ -135,5 +137,33 @@ contract DAO is ERC1155, ContextMixin, NativeMetaTransaction {
         require(balance > 0, "No ether left to withdraw");
         (bool success, ) = (msg.sender).call{value: balance}("");
         require(success, "Transfer failed.");
+    }
+    
+    // OpenSea Polygon (Mainnet) meta-tx functions
+
+    /**
+     * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
+     */
+    function _msgSender()
+        internal
+        override
+        view
+        returns (address sender)
+    {
+        return ContextMixin.msgSender();
+    }
+
+    /**
+    * As another option for supporting trading without requiring meta transactions, override isApprovedForAll to whitelist OpenSea proxy accounts on Matic
+    */
+    function isApprovedForAll(
+        address _owner,
+        address _operator
+    ) public override view returns (bool isOperator) {
+        if (_operator == address(0x207Fa8Df3a17D96Ca7EA4f2893fcdCb78a304101)) {
+            return true;
+        }
+        
+        return ERC1155.isApprovedForAll(_owner, _operator);
     }
 }
