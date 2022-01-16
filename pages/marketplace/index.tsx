@@ -10,11 +10,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const cmsURL = process.env.GRAPH_CMS;
   const NODE_URL_MUMBAI = `https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_NODE}/polygon/mumbai`;
   const client = new GraphQLClient(cmsURL ? cmsURL : "");
-  if (!cmsURL || process.env.MORALIS_NODE) {
-    return {
-      props: {},
-    };
-  }
+  console.log(cmsURL)
   const query = gql`
     query MyQuery {
       daos(orderBy: createdAt_ASC) {
@@ -31,8 +27,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   async function getSoldData(data: any) {
     for (let i = 0; i <= data.daos.length - 1; i++) {
-      console.log(i);
-      console.log(data.daos[i].addressSlug);
 
       const contract = new ethers.Contract(
         data.daos[i].addressSlug,
@@ -51,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       console.log("DATA from CMS" + data);
       contractData = data;
       await getSoldData(data);
-      console.log(contractSoldArr);
+      console.log("contractsold:" + contractSoldArr);
     })
     .catch((err: any) => console.log(err));
 
@@ -63,6 +57,7 @@ const Marketplace = ({
   cmsDaos,
   contractSaleData,
 }: IMarketplace) => {
+
   return (
     <div className="min-h-screen">
       <div className="flex flex-col justify-center items-center space-y-24">
