@@ -4,10 +4,12 @@ async function main() {
   //const [seller, buyer ] = await hre.ethers.getSigners();
 
   const Dao = await hre.ethers.getContractFactory("DAO");
-  const dao = await Dao.deploy();
+  const dao = await Dao.deploy("InitialName");
+
+  //! I was planning on adding contract to CMS to automate the process of displaying new DAOs on the frontend
+  //! The problem is, Hardhat dao.address doesn't return the actual address of the contract.
 
   await dao.deployed();
-  console.log("Greeter deployed to:", dao.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

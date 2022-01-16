@@ -1,13 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
-import { ICMSDao } from '../../interfaces/cmscontract'
+import { ICMSDao } from '../../../interfaces/cmscontract'
 
 const ContractCard = ({
     cmsDao,
-    contractSaleData,
+    contractSold,
+    contractPrice
 }: {
     cmsDao: ICMSDao;
-    contractSaleData: boolean;
+    contractSold: boolean;
+    contractPrice: string
 }) => {
     return (
 
@@ -20,15 +22,15 @@ const ContractCard = ({
                 <h1
                     className={`
   
-                  ${contractSaleData
+                  ${contractSold
                             ? " text-orange-500"
                             : "text-teal-500"
                         }`}
                 >
                     {" "}
-                    {contractSaleData
+                    {contractSold
                         ? "Contract Sold"
-                        : "Contract Available"}
+                        : `Contract Available at ${contractPrice} matic`}
                 </h1>
             </div>
 
