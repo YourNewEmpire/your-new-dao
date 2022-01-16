@@ -4,7 +4,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ganache");
 const privateKey1 = process.env.MNEMONIC
 const privateKey2 = process.env.MNEMONIC_2
-const maticUrl = process.env.MATIC_APP_ID
+const nodeUrl = process.env.MATIC_APP_ID
 const polygonScan = process.env.POLYGONSCAN
 module.exports = {
   solidity: "0.8.0",
@@ -14,13 +14,13 @@ module.exports = {
     },
     matic: {
       chainId: 137,
-      url: `https://speedy-nodes-nyc.moralis.io/${maticUrl}/polygon/matic`,
-      accounts: [privateKey1, privateKey2]
+      url: `https://rpc-mainnet.maticvigil.com/v1/${nodeUrl}`,
+      accounts: [privateKey1]
     },
     mumbai: {
       chainId: 80001,
-      url: `https://speedy-nodes-nyc.moralis.io/${maticUrl}/polygon/mumbai`,
-      accounts: [privateKey1, privateKey2]
+      url: `https://rpc-mumbai.maticvigil.com/v1/${nodeUrl}`,
+      accounts: [privateKey1]
     }
   },
   //* Keep name as 'etherscan' to avoid errors.
