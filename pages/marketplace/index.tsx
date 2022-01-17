@@ -13,13 +13,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const client = new GraphQLClient(cmsURL ? cmsURL : "");
   const query = gql`
     query MyQuery {
-      maticDaos(orderBy: createdAt_ASC) {
+      daoContracts(orderBy: createdAt_ASC) {
         addressSlug
         addressUrl
-      }
-      mumbaiDaos(orderBy: createdAt_ASC) {
-        addressSlug
-        addressUrl
+        chain
       }
     }
   `;
@@ -41,10 +38,18 @@ export const getServerSideProps: GetServerSideProps = async () => {
   ];
   const maticProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MATIC);
   const mumbaiProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MUMBAI);
+
   async function getSoldData(data: any) {
-    for (let i = 0; i <= data.mumbaiDaos.length - 1; i++) {
+    const maticArray = data.daoContracts.filter(
+      (dao: any) => dao.chain === "matic"
+    );
+    const mumbaiArray = data.daoContracts.filter(
+      (dao: any) => dao.chain === "mumbai"
+    );
+
+    for (let i = 0; i <= mumbaiArray.length - 1; i++) {
       const contract = new ethers.Contract(
-        data.mumbaiDaos[i].addressSlug,
+        mumbaiArray[i].addressSlug,
         contractAbi,
         mumbaiProvider
       );
@@ -61,9 +66,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
         )
         .catch((err: any) => console.log(err));
     }
-    for (let i = 0; i <= data.maticDaos.length - 1; i++) {
+    for (let i = 0; i <= maticArray.length - 1; i++) {
       const contract = new ethers.Contract(
-        data.maticDaos[i].addressSlug,
+        maticArray[i].addressSlug,
         contractAbi,
         maticProvider
       );
@@ -91,18 +96,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
-      maticDaos: contractData.maticDaos,
-      mumbaiDaos: contractData.mumbaiDaos,
+      daoContracts: contractData.daoContracts,
       contractSaleData: { contractMaticData, contractMumbaiData },
     },
   };
 };
-const Marketplace = ({
-  maticDaos,
-  mumbaiDaos,
-  contractSaleData,
-}: IMarketplace) => {
-
+const Marketplace = ({ daoContracts, contractSaleData }: IMarketplace) => {
+  //todo - could do this in the server side instead
+  const maticArray = daoContracts.filter((dao) => dao.chain === "matic");
+  const mumbaiArray = daoContracts.filter((dao) => dao.chain === "mumbai");
   return (
     <div className="min-h-screen">
       <div className="flex flex-col justify-center items-center space-y-24">
@@ -123,7 +125,7 @@ const Marketplace = ({
         >
           <h1 className="text-center text-3xl xl:text-6xl ">Matic Contracts</h1>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-8 xl:gap-14 grid-flow-row">
-            {maticDaos.map((item, index) => (
+            {maticArray.map((item, index) => (
               <div key={index}>
                 <ContractCard
                   cmsDao={item}
@@ -146,7 +148,7 @@ const Marketplace = ({
             Mumbai Contracts
           </h1>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-8 xl:gap-14 grid-flow-row">
-            {mumbaiDaos.map((item, index) => (
+            {mumbaiArray.map((item, index) => (
               <div key={index}>
                 <ContractCard
                   cmsDao={item}

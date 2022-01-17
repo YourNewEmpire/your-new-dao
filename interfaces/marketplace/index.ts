@@ -9,7 +9,7 @@ export type IContractChainData ={
     contractMumbaiData: IContractSaleData
 }
 export interface IMarketplace {
-    mumbaiDaos: ICMSDao[]
-    maticDaos: ICMSDao[];
+    daoContracts: ICMSDao[]
+
     contractSaleData: IContractChainData;
 }
