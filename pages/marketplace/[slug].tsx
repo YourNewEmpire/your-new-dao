@@ -5,7 +5,7 @@ import { useMoralis } from "react-moralis";
 import { BigNumber, ethers } from "ethers";
 import { ICMSDao } from "../../interfaces/cmscontract";
 import AlertCard from "../../components/Cards/AlertCard";
-import contractInterface from "../../Hardhat/artifacts/contracts/DAO.sol/DAO.json";
+import contractInterface from "../../artifacts/contracts/DAO.sol/DAO.json";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { QuestionMarkCircleIcon } from "@heroicons/react/solid";
