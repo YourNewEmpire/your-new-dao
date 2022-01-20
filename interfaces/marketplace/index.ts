@@ -10,6 +10,5 @@ export type IContractChainData ={
 }
 export interface IMarketplace {
     daoContracts: ICMSDao[]
-
     contractSaleData: IContractChainData;
 }
