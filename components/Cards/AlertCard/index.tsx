@@ -6,7 +6,7 @@ export default function AlertCard({ title, body, icon, success, failure, info, w
       if (title && body && warning) return (
             <div
                   className=" 
-            bg-th-accent-warning-light text-th-accent-warning-dark border-th-accent-failure-medium 
+            bg-th-accent-warning-light text-th-accent-warning-dark border-th-accent-warning-medium 
             border-l-2 md:border-l-8 px-4 py-3 rounded-l-none rounded "
                   role="alert"
             >
