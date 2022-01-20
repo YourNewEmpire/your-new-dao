@@ -17,13 +17,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
         addressSlug
         addressUrl
         chain
+        daoVersion
       }
     }
   `;
 
   let contractData: any = {};
-  let contractSoldArr: boolean[] = [];
-  let contractPriceArr: string[] = [];
+
   let contractMaticData: IContractSaleData = {
     contractSoldArr: [],
     contractPriceArr: [],
@@ -115,7 +115,7 @@ const Marketplace = ({ daoContracts, contractSaleData }: IMarketplace) => {
           icon={<ExclamationCircleIcon className="w-10 h-10" />}
           body="
         Please note that this project is currently on Polygon Mainnet/Mumbai 
-        and I am planning to launch on other EVM L2 chains in the future, avoiding mainnet for the foreseeable.
+        and I am planning to launch on other EVM L2 chains in the future, avoiding L1 for the foreseeable.
         You can choose from testnet or mainnet contracts. Contracts on both will be valued at 0.1 matic for now.
         "
         />
