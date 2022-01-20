@@ -2,43 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+#nprogress .bar {
+  background: rgb(55 48 163) !important;
+}
+#nprogress .spinner .spinner-icon {
+  border-top-color: rgb(55 48 163);
+  border-left-color: rgb(55 48 163);
+}
 :root {
-      --background: theme('colors.slate.800');
-      --background-secondary: theme('colors.slate.500');
-      --foreground: theme('colors.slate.900');
+  --background: theme("colors.slate.800");
+  --background-secondary: theme("colors.slate.500");
+  --foreground: theme("colors.slate.900");
 
-      --primary-dark: theme('colors.blue.800');
-      --primary-medium: theme('colors.blue.400');
-      --primary-light: theme('colors.blue.300');
+  --primary-dark: theme("colors.blue.800");
+  --primary-medium: theme("colors.blue.400");
+  --primary-light: theme("colors.blue.300");
 
+  /* ? Accent Colours */
+  --accent-dark: theme("colors.fuchsia.700");
+  --accent-medium: theme("colors.fuchsia.500");
+  --accent-light: theme("colors.fuchsia.300");
+  --accent-moralis: theme("colors.moralis");
+  /*  *success colors */
+  --accent-success: theme("colors.green.600");
+  --accent-success-light: theme("colors.green.100");
+  --accent-success-medium: theme("colors.green.500");
+  --accent-success-dark: theme("colors.green.700");
 
-      /* ? Accent Colours */
-      --accent-dark: theme('colors.fuchsia.700');
-      --accent-medium: theme('colors.fuchsia.500');
-      --accent-light: theme('colors.fuchsia.300');
-      --accent-moralis: theme('colors.moralis');
-      /*  *success colors */
-      --accent-success: theme('colors.green.600');
-      --accent-success-light: theme('colors.green.100');
-      --accent-success-medium: theme('colors.green.500');
-      --accent-success-dark: theme('colors.green.700');
+  /*  ? info colors */
+  --accent-info: theme("colors.blue.600");
+  --accent-info-light: theme("colors.blue.100");
+  --accent-info-medium: theme("colors.blue.500");
+  --accent-info-dark: theme("colors.blue.700");
 
-      /*  ? info colors */
-      --accent-info: theme('colors.blue.600');
-      --accent-info-light: theme('colors.blue.100');
-      --accent-info-medium: theme('colors.blue.500');
-      --accent-info-dark: theme('colors.blue.700');
+  /* ! failure  colors */
+  --accent-failure: theme("colors.red.600");
+  --accent-failure-light: theme("colors.red.100");
+  --accent-failure-medium: theme("colors.red.500");
+  --accent-failure-dark: theme("colors.red.700");
 
-      /* ! failure  colors */
-      --accent-failure: theme('colors.red.600');
-      --accent-failure-light: theme('colors.red.100');
-      --accent-failure-medium: theme('colors.red.500');
-      --accent-failure-dark: theme('colors.red.700');
-
-      /*  todo - warning colors */
-      --accent-warning: theme('colors.amber.600');
-      --accent-warning-light: theme('colors.amber.100');
-      --accent-warning-medium: theme('colors.amber.500');
-      --accent-warning-dark: theme('colors.amber.700');
-
-    }
+  /*  todo - warning colors */
+  --accent-warning: theme("colors.amber.600");
+  --accent-warning-light: theme("colors.amber.100");
+  --accent-warning-medium: theme("colors.amber.500");
+  --accent-warning-dark: theme("colors.amber.700");
+}
