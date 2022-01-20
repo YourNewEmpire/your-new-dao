@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Moralis from "moralis/node";
-import contractInterface from "../../artifacts/contracts/DAO.sol/DAO.json";
 import { ethers } from "ethers";
-import { exit } from "process";
 const serverUrl = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 const appId = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
 const masterKey = process.env.MORALIS_MASTER_KEY;
