@@ -107,7 +107,7 @@ const Marketplace = ({ daoContracts, contractSaleData }: IMarketplace) => {
   const mumbaiArray = daoContracts.filter((dao) => dao.chain === "mumbai");
   return (
     <div className="min-h-screen">
-      <div className="flex flex-col justify-center items-center space-y-24">
+      <div className="flex flex-col justify-center items-center space-y-4 lg:space-y-12 xl:space-y-20">
         <h1 className="text-6xl text-center font-semibold">Marketplace</h1>
         <AlertCard
           info
