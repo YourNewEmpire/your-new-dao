@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { QuestionMarkCircleIcon } from "@heroicons/react/solid";
 import useHovered from "../../hooks/useHovered";
+import AuthButton from "../../components/Buttons/AuthButton";
 const cmsURL = process.env.GRAPH_CMS;
 const client = new GraphQLClient(cmsURL ? cmsURL : "");
 
@@ -37,12 +38,6 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
     success: "",
   });
 
-  const dummyFunc = async () => {
-    setPurchaseData({ ...purchaseData, loading: true });
-    setTimeout(() => {
-      setPurchaseData({ ...purchaseData, loading: false });
-    }, 3000);
-  };
   const buyContract = async () => {
     setPurchaseData({ ...purchaseData, loading: true });
     const abi = [
@@ -158,14 +153,7 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
               title="Metamask Auth"
               body="You're needing to authenticate to buy this DAO contract on this frontend. If you do not trust this frontend, you can use PolygonScan."
             />
-            <motion.button
-              className="text-center text-2xl p-2 lg:p-4 xl:p-6 rounded-lg bg-cyan-600"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => authenticate()}
-            >
-              Authenticate
-            </motion.button>
+           <AuthButton/>
           </div>
         )}
 
