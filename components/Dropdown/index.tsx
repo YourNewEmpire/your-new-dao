@@ -15,7 +15,7 @@ export default function Dropdown({ title, options, clickHandler }: any) {
                         flex flex-row space-x-2
                         justify-center items-center
                         p-2 xl:p-2 text-xl
-                        text-center text-th-primary-light 
+                        text-center 
                         bg-th-primary-medium rounded-md
                         shadow-md hover:shadow-lg
                         transition duration-200 ease-in-out 
@@ -43,8 +43,8 @@ export default function Dropdown({ title, options, clickHandler }: any) {
                               <Menu.Items className="
                               p-2 rounded-md text-lg
                               absolute flex flex-col top-10 
-                              bg-opacity-50 bg-th-primary-light 
-                              text-center text-th-primary-dark
+                              bg-opacity-50 bg-cyan-600
+                              text-center
                               z-50
                               ">
                                     {options.map((item: string, index: number) =>
@@ -54,7 +54,7 @@ export default function Dropdown({ title, options, clickHandler }: any) {
                                                       className='
                                                       rounded-md px-2
                                                       transition duration-200 ease-in-out 
-                                                      hover:bg-th-primary-medium hover:cursor-pointer'
+                                                      hover:bg-indigo-800 hover:cursor-pointer'
                                                 >
                                                       {item}
                                                 </button>
