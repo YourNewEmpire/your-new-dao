@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { useMoralis } from "react-moralis";
+import AuthButton from "../components/Buttons/AuthButton";
 import AlertCard from "../components/Cards/AlertCard";
 const Home: NextPage = () => {
   const { authenticate, isAuthenticated } = useMoralis();
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
           title="Wallet Authentication"
           body={
             <div>
-              STATUS:{" "}
+              WALLET STATUS:{" "}
               {isAuthenticated ? (
                 <p className="text-th-accent-success-medium">CONNECTED</p>
               ) : (
@@ -24,6 +25,7 @@ const Home: NextPage = () => {
             </div>
           }
         />
+        {!isAuthenticated && <AuthButton/>}
       </div>
     </div>
   );
