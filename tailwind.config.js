@@ -1,6 +1,7 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -19,7 +20,6 @@ module.exports = {
         80: "0.8",
         90: "0.90",
       },
-
       fontSize: {
         xs: ".75rem",
         sm: ".875rem",
