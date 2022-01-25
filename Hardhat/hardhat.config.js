@@ -4,7 +4,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ganache");
 const privateKey1 = process.env.MNEMONIC
 const privateKey2 = process.env.MNEMONIC_2
-const nodeUrl = process.env.MATIC_APP_ID
+const nodeUrl = process.env.MATIC_NODE
 const polygonScan = process.env.POLYGONSCAN
 module.exports = {
   solidity: "0.8.0",
