@@ -1,31 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { HomeIcon } from "@heroicons/react/solid";
+import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
+import { HomeIcon, CogIcon, SunIcon as SunSolid } from "@heroicons/react/solid";
+import { SunIcon as SunOutline } from "@heroicons/react/outline";
 import navItems from "../../lib/content/navItems";
+import Modal from "../Modal";
 const Nav = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const close = () => setModalOpen(false);
+  const open = () => setModalOpen(true);
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
   return (
-    <div className="bg-cyan-600  ">
+    <div className="bg-cyan-600 text-slate-300 font-body">
       <nav
         className="
                   flex items-center justify-around p-6 space-x-16 mx-0 xl:mx-12
-                    text-center text-5xl text-slate-300 font-body font-extrabold
+                  text-center text-lg lg:text-3xl xl:text-5xl  font-extrabold
                   "
       >
         <Link passHref href="/">
           <motion.a
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3 }}
             className={`p-2 rounded-lg hover:shadow-lg
             ${router.route !== "/" && "bg-cyan-800  "}
-            ${
-              router.route === "/" && "bg-indigo-800 shadow-md"
-            }
+            ${router.route === "/" && "bg-indigo-800 shadow-md"}
             `}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9,  translateY: 2, rotateX: 25, skewX: 3 }}
           >
-            <HomeIcon className="w-24 h-24 hover:cursor-pointer" />
+            <HomeIcon className="w-8 lg:w-16 xl:w-24 h-8 lg:h-16 xl:h-24 hover:cursor-pointer" />
           </motion.a>
         </Link>
         {navItems.map((item, index) => (
@@ -36,7 +41,7 @@ const Nav = () => {
               className={`
                 ${router.route !== item.link && "bg-cyan-800 "}
                 ${router.route === item.link && "bg-indigo-800 shadow-md"}
-                p-6 w-full  h-full rounded-lg 
+                p-2 lg:p-4 xl:p-6 w-full  h-full rounded-lg 
                 items-center justify-center  hover:cursor-pointer hover:shadow-lg
                `}
             >
@@ -44,7 +49,47 @@ const Nav = () => {
             </motion.a>
           </Link>
         ))}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3 }}
+          className="
+          p-2 
+          rounded-lg hover:shadow-lg
+        bg-cyan-800"
+          onClick={() => (modalOpen ? close() : open())}
+        >
+          <CogIcon className="w-8 lg:w-16 xl:w-24 h-8 lg:h-16 xl:h-24 hover:cursor-pointer" />
+        </motion.button>
       </nav>
+
+      <AnimatePresence
+        // Disable any initial animations on children that
+        // are present when the component is first rendered
+        initial={false}
+        // Only render one component at a time.
+        // The exiting component will finish its exit
+        // animation before entering component is rendered
+        exitBeforeEnter={true}
+        // Fires when all exiting nodes have completed animating outSunOutline
+        onExitComplete={() => null}
+      >
+        {modalOpen && (
+          <Modal handleClose={close}>
+            <div className="flex flex-row justify-center items-center space-x-6 text-center">
+              <p className="text-xl "> Toggle dark/light theme</p>
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? (
+                  <SunOutline className="w-8 lg:w-16 xl:w-24 h-8 lg:h-16 xl:h-24" />
+                ) : (
+                  <SunSolid className="w-8 lg:w-16 xl:w-24 h-8 lg:h-16 xl:h-24" />
+                )}
+              </button>
+            </div>
+          </Modal>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
