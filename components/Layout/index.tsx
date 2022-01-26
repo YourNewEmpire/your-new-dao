@@ -27,7 +27,7 @@ const Layout = ({ children }: Childs) => {
         />
       </Head>
       <Nav />
-      <div className=" xl:mx-20 sm:mx-6 mx-4 lg:p-2 xl:p-12 justify-center items-center bg-th-foreground text-slate-300 font-body shadow-2xl shadow-cyan-600 ">
+      <div className=" xl:mx-20 sm:mx-6 mx-4 lg:p-2 xl:p-12 justify-center items-center bg-th-foreground text-th-text font-body shadow-2xl shadow-cyan-600 ">
         {children}
       </div>
     </div>

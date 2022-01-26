@@ -14,7 +14,7 @@ const Nav = () => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   return (
-    <div className="bg-cyan-600 text-slate-300 font-body">
+    <div className="bg-cyan-600 text-th-text font-body">
       <nav
         className="
                   flex items-center justify-around p-6 space-x-16 mx-0 xl:mx-12
@@ -61,16 +61,9 @@ const Nav = () => {
           <CogIcon className="w-8 lg:w-16 xl:w-24 h-8 lg:h-16 xl:h-24 hover:cursor-pointer" />
         </motion.button>
       </nav>
-
       <AnimatePresence
-        // Disable any initial animations on children that
-        // are present when the component is first rendered
         initial={false}
-        // Only render one component at a time.
-        // The exiting component will finish its exit
-        // animation before entering component is rendered
         exitBeforeEnter={true}
-        // Fires when all exiting nodes have completed animating outSunOutline
         onExitComplete={() => null}
       >
         {modalOpen && (
