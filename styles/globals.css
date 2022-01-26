@@ -10,12 +10,12 @@
   border-left-color: rgb(55 48 163);
 }
 
-
 :root {
   --background: theme("colors.slate.800");
   --background-secondary: theme("colors.slate.500");
   --foreground: theme("colors.slate.900");
 
+  --text: theme("colors.slate.300");
   --primary-dark: theme("colors.cyan.800");
   --primary-medium: theme("colors.cyan.600");
   --primary-light: theme("colors.cyan.200");
@@ -30,7 +30,7 @@
   --accent-success-light: theme("colors.green.100");
   --accent-success-medium: theme("colors.green.500");
   --accent-success-dark: theme("colors.green.700");
-
+  --text: theme("colors.slate.300")
   /*  ? info colors */
   --accent-info: theme("colors.blue.600");
   --accent-info-light: theme("colors.blue.100");
@@ -49,15 +49,16 @@
   --accent-warning-medium: theme("colors.amber.500");
   --accent-warning-dark: theme("colors.amber.700");
 }
-[data-theme='light'] {
+[data-theme="light"] {
   --background: theme("colors.slate.800");
   --background-secondary: theme("colors.slate.500");
   --foreground: theme("colors.slate.500");
 
+  --text: theme("colors.slate.900");
+
   --primary-dark: theme("colors.cyan.800");
   --primary-medium: theme("colors.cyan.600");
   --primary-light: theme("colors.cyan.200");
-
 
   /* ? Accent Colours */
   --accent-dark: theme("colors.indigo.900");
