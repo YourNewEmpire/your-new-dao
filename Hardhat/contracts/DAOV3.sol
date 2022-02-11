@@ -5,12 +5,11 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "./MetaTx/ContextMixin.sol";
 import "./MetaTx/NativeMetaTransaction.sol";
 
-contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
+contract DAOV3 is ERC1155, ContextMixin, NativeMetaTransaction {
     event contractSaleEvent(address newOwner);
     //Contract Sale Price
-    address public constant originalSeller =
-        0x5f4c3843495Babe89cB3516cEbD8840024e741fa;
-    uint256 public constant salePrice = 0.1 ether;
+    address public originalSeller;
+    uint256 public constant salePrice = 1 ether;
     bool public contractSold;
 
     modifier onlySeller() {
@@ -40,7 +39,7 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
 
     modifier onlyOwners() {
         require(
-            isOwner[msg.sender] = true,
+            isOwner[msg.sender] == true,
             "You need to have ownership for this."
         );
         _;
@@ -56,6 +55,7 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
     constructor(string memory name_) ERC1155("") {
         //Set contract status as unsold
         contractSold = false;
+        originalSeller = msg.sender;
         name = name_;
         _initializeEIP712(name_);
     }
@@ -65,10 +65,9 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
         public
         payable
     {
-        require(msg.value >= salePrice, "Not enough pay, Chad.");
         require(contractSold == false, "SOLD. Find another DAO to purchase.");
+        require(msg.value >= salePrice, "Not enough pay, Chad.");
         // Ensure my ownership is false
-        isOwner[originalSeller] = false;
         isOwner[msg.sender] = true;
         owners.push(msg.sender);
         // Mark as sold
@@ -107,7 +106,7 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
      */
     function voteUp(uint256 index) public {
         require(
-            balanceOf(msg.sender, 0) > 0,
+            _isNFTOwner(msg.sender),
             "You need ownership of NFTs or Coins for this."
         );
         require(
@@ -121,7 +120,7 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
 
     function voteDown(uint256 index) public {
         require(
-            balanceOf(msg.sender, 0) > 0,
+            _isNFTOwner(msg.sender),
             "You need ownership of NFTs or Coins for this."
         );
         require(
@@ -151,17 +150,13 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
     }
 
     //Balance of batch but with 1 user. Check if user has any token
-    function _isNFTOwner(address nftOwner) internal returns (bool success) {
+    function _isNFTOwner(address nftOwner) public view returns (bool ) {
         require(nftOwner != address(0), "ERC1155: balance query for the zero address");
-        bool memory ownerOfOne = false;
+        bool ownerOfOne = false;
         for (uint256 i = 0; i < tokenIdArray.length; i++) {
-            uint256 memory owned = balanceOf(nftOwner, tokenIdArray[i]);
-            if(owned = 0) {
-                continue;
-            }
-            if (owned != 0) {
+            uint256 owned = balanceOf(nftOwner, tokenIdArray[i]);
+            if(owned != 0) {
                 ownerOfOne = true;
-                break;
             }
             // Call balanceOf for each i. 
             // todo - just gotta realise minting real quick
@@ -170,9 +165,9 @@ contract DAOV2 is ERC1155, ContextMixin, NativeMetaTransaction {
         else return false;
     }
 
-    function ownerMint(address to, string tokenString, uint256 amount) public onlyOwners {
+    function ownerMint(address to, string memory tokenString, uint256 amount) public onlyOwners {
         require(amount != 0, "Failed to mint. No amount was passed in.");
-        _mint(to, tokenIdMapping[tokenString], amount);
+        _mint(to, tokenIdMapping[tokenString], amount, "");
     }
 
     //todo - in future, define a batch mint abstraction too.
