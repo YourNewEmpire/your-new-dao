@@ -1,16 +1,25 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const [seller, buyer] = await ethers.getSigners();
+beforeEach(async function () {
+  // Get the ContractFactory and Signers here.
+  Dao = await ethers.getContractFactory("DAOV3");
+  [seller, buyer, thirdWheel] = await ethers.getSigners();
+  deployedDao = await Dao.deploy("InitialName");
+});
 
-    //
-    const Dao = await ethers.getContractFactory("DAO");
-    const dao = Dao.attach("0xd16bCBbd6fcA80201444d4dA2b6e4A272E5c8376");
-    const tx = await dao.connect(buyer).buyOwnership();
+describe("Deployment + DAO Purchase", function () {
+  it("Should purchase ownership", async function () {
+    const [seller, buyer, thirdWheel] = await ethers.getSigners();
+    const txOptions = { value: ethers.utils.parseEther("1.0") };
+    const buyerName = "Arch";
+    const daoName = buyerName + "Dao";
+    const tx = await deployedDao
+      .connect(buyer)
+      .buyOwnership(buyerName, daoName, txOptions);
     await tx.wait();
-    expect(await dao.isOwner(buyer)).to.equal(true);
-
+    expect(await deployedDao.isOwner(buyer.address)).to.equal(true);
+    expect(await deployedDao.name()).to.equal(daoName);
+    expect(await deployedDao.ownerName()).to.equal(buyerName);
   });
 });
