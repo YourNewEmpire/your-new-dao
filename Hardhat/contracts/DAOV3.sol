@@ -7,6 +7,8 @@ import "./MetaTx/NativeMetaTransaction.sol";
 
 contract DAOV3 is ERC1155, ContextMixin, NativeMetaTransaction {
     event contractSaleEvent(address newOwner);
+    //todo - Add missing events for other methods
+
     //Contract Sale Price
     address public originalSeller;
     uint256 public constant salePrice = 1 ether;
@@ -67,16 +69,14 @@ contract DAOV3 is ERC1155, ContextMixin, NativeMetaTransaction {
     {
         require(contractSold == false, "SOLD. Find another DAO to purchase.");
         require(msg.value >= salePrice, "Not enough pay, Chad.");
-        // Ensure my ownership is false
         isOwner[msg.sender] = true;
         owners.push(msg.sender);
         // Mark as sold
         contractSold = true;
-
         ownerName = newOwnerName;
         name = newDaoName;
         emit contractSaleEvent(msg.sender);
-        // initial mint of semi-fungible COINS
+        // initial mint of semi-fungible COINS could happen in purchase
     }
 
     function addOwners(address[] memory newOwners) public onlyOwners {
@@ -150,29 +150,35 @@ contract DAOV3 is ERC1155, ContextMixin, NativeMetaTransaction {
     }
 
     //Balance of batch but with 1 user. Check if user has any token
-    function _isNFTOwner(address nftOwner) public view returns (bool ) {
-        require(nftOwner != address(0), "ERC1155: balance query for the zero address");
+    function _isNFTOwner(address nftOwner) public view returns (bool) {
+        require(
+            nftOwner != address(0),
+            "ERC1155: balance query for the zero address"
+        );
         bool ownerOfOne = false;
         for (uint256 i = 0; i < tokenIdArray.length; i++) {
             uint256 owned = balanceOf(nftOwner, tokenIdArray[i]);
-            if(owned != 0) {
+            if (owned != 0) {
                 ownerOfOne = true;
             }
-            // Call balanceOf for each i. 
+            // Call balanceOf for each i.
             // todo - just gotta realise minting real quick
         }
-        if(ownerOfOne) return true;
+        if (ownerOfOne) return true;
         else return false;
     }
 
-    function ownerMint(address to, string memory tokenString, uint256 amount) public onlyOwners {
+    function ownerMint(
+        address to,
+        string memory tokenString,
+        uint256 amount
+    ) public onlyOwners {
         require(amount != 0, "Failed to mint. No amount was passed in.");
         _mint(to, tokenIdMapping[tokenString], amount, "");
     }
 
     //todo - in future, define a batch mint abstraction too.
 
-    
     // OPENSEA POLYGON (MAINNET) META TRANSACTIONS
 
     /**
@@ -198,11 +204,15 @@ contract DAOV3 is ERC1155, ContextMixin, NativeMetaTransaction {
         return ERC1155.isApprovedForAll(_owner, _operator);
     }
 
-    // Original Seller (me, the developer) can withdraw the contracts balance
+    // Original Seller (the deployer) can withdraw the contracts balance
     function withdraw() public payable onlySeller {
         uint256 balance = address(this).balance;
         require(balance > 0, "No ether left to withdraw");
         (bool success, ) = (msg.sender).call{value: balance}("");
         require(success, "Transfer failed.");
+    }
+
+    function contractBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }
