@@ -19,20 +19,21 @@ module.exports = {
     localhost: {
       url: "http://127.0.0.1:8545/",
     },
-    matic: {
+    polygon: {
       chainId: 137,
       url: `https://rpc-mainnet.maticvigil.com/v1/${nodeUrl}`,
-      accounts: [privateKey1]
+      accounts: [privateKey1],
     },
     mumbai: {
       chainId: 80001,
       url: `https://rpc-mumbai.maticvigil.com/v1/${nodeUrl}`,
-      accounts: [privateKey1]
+      accounts: [privateKey1],
     },
   },
   //* Keep name as 'etherscan' to avoid errors.
   etherscan: {
-    url: "https://polygonscan.com/",
-    apiKey: polygonScan,
+    apiKey: {
+      polygon: polygonScan,
+    },
   },
 };
