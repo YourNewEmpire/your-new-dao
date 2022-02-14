@@ -4,7 +4,7 @@ const { ethers } = require("hardhat");
 describe("DAO Contract", function () {
   //? Set factory, provider, signers and names before deploying with second hh address (buyer).
   beforeEach(async function () {
-    Dao = await ethers.getContractFactory("DAOV3");
+    Dao = await ethers.getContractFactory("DAO");
     provider = ethers.provider;
     [seller, buyer, daoOwner2, daoOwner3] = await ethers.getSigners();
     txOptions = { value: ethers.utils.parseEther("1.0") };
