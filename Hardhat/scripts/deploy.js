@@ -3,11 +3,11 @@ const hre = require("hardhat");
 async function main() {
   //const [seller, buyer ] = await hre.ethers.getSigners();
 
-  const Dao = await hre.ethers.getContractFactory("DAOV2");
+  const Dao = await hre.ethers.getContractFactory("DAO");
   const dao = await Dao.deploy("InitialName");
 
   await dao.deployed();
-  console.log("Contract deployed to:" + dao.address)
+  console.log("Contract deployed to: " + dao.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
