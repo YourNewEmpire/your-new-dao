@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { GraphQLClient, gql } from "graphql-request";
 import { useMoralis } from "react-moralis";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { ICMSDao } from "../../interfaces/cmscontract";
 import AlertCard from "../../components/Cards/AlertCard";
 import contractInterface from "../../public/DAO.sol/DAO.json";
@@ -39,79 +39,62 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
   });
 
   const buyContract = async () => {
+    //? Here I am using Ethers.js for user metamask transactions as oppose to Moralis.
     setPurchaseData({ ...purchaseData, loading: true });
-    const abi = [
-      "function buyOwnership(string memory newOwnerName, string memory newDaoName) public payable",
-      "function contractSold() view returns(bool)",
-    ];
-    const formattedPrice = Moralis.Units.Token("0.1", 18);
-    console.log(formattedPrice);
+    const formattedPrice = Moralis.Units.Token("1", 18);
     //@ts-ignore
     const { ethereum } = window;
     if (!ethereum) {
       return setPurchaseData({
         ...purchaseData,
         loading: false,
-        error: "no metamask detected",
+        error: "No metamask detected",
       });
     }
+    //todo - check for authentication and signer
     const provider = new ethers.providers.Web3Provider(ethereum);
-    console.log(network);
-    if (dao.chain === "mumbai") {
-      const signer = provider.getSigner();
-      const factory = new ethers.ContractFactory(
-        contractInterface.abi,
-        contractInterface.bytecode,
-        signer
-      );
-      const contract = factory.attach(dao.addressSlug);
-      const contractPurchase = await contract.buyOwnership(
-        formData.ownerName,
-        formData.contractName,
-        { value: formattedPrice }
-      );
-      return await contractPurchase.wait().then(() => {
-        setPurchaseData({
-          ...purchaseData,
-          loading: false,
-          success: "yes",
-          error: "",
-        });
-      });
-    } else if (dao.chain === "matic") {
-      const signer = provider.getSigner();
-      const factory = new ethers.ContractFactory(
-        contractInterface.abi,
-        contractInterface.bytecode,
-        signer
-      );
-      const contract = factory.attach(dao.addressSlug);
-      const contractPurchase = await contract.buyOwnership(
-        formData.ownerName,
-        formData.contractName,
-        { value: formattedPrice }
-      );
-      return await contractPurchase.wait().then(() => {
-        setPurchaseData({
-          ...purchaseData,
-          loading: false,
-          success: "yes",
-          error: "",
-        });
-      });
-    } else {
+    const signer = provider.getSigner();
+    if (!signer)
       return setPurchaseData({
         ...purchaseData,
         loading: false,
         success: "no",
-        error:
-          "No chain specified by data. This is not your fault but we're trying so hard",
+        error: "No signer detected from Metamask",
       });
-    }
+    const factory = new ethers.ContractFactory(
+      contractInterface.abi,
+      contractInterface.bytecode,
+      signer
+    );
+    const contract = factory.attach(dao.addressSlug);
+    const contractPurchase = await contract.buyOwnership(
+      formData.ownerName,
+      formData.contractName,
+      { value: formattedPrice }
+    );
+    return await contractPurchase
+      .wait()
+      .then(() => {
+        setPurchaseData({
+          ...purchaseData,
+          loading: false,
+          success: "yes",
+          error: "",
+        });
+      })
+      .catch((err: any) => {
+        console.log(err);
+        setPurchaseData({
+          ...purchaseData,
+          loading: false,
+          success: "no",
+          error: "Error when attempting tx: " + err,
+        });
+      });
   };
   const linkOwner = async () => {
-    console.log("clicked");
     //? chain param is for validating user ownership in api route
+    //? need to check if they are authenticated
     if (!isAuthenticated || !user) {
       await authenticate().then(async () => {
         await axios
@@ -119,6 +102,7 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
             userAddress: user?.get("ethAddress"),
             daoAddress: dao.addressSlug,
             chain: dao.chain,
+            version: dao.daoVersion,
           })
           .then((result: any) => {
             console.log(result);
@@ -133,9 +117,10 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
           ownerAddress: user?.get("ethAddress"),
           daoAddress: dao.addressSlug,
           chain: dao.chain,
-          version: dao.daoVersion
+          version: dao.daoVersion,
         })
         .then((result: any) => {
+          //todo - set ui state to notify user of dao link
           console.log(result);
         })
         .catch((err: any) => {
@@ -153,7 +138,7 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
               title="Metamask Auth"
               body="You're needing to authenticate to buy this DAO contract on this frontend. If you do not trust this frontend, you can use PolygonScan."
             />
-           <AuthButton/>
+            <AuthButton />
           </div>
         )}
 
@@ -189,15 +174,8 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
               </div>
             </div>
             <p className="text-base text-th-accent-warning-medium">
-              Ensure your wallet is on {dao.chain} network.{" "}
-              <a
-                className="hover:no-underline underline"
-                rel="noopener noreferrer"
-                target="blank"
-                href="https://faucet.polygon.technology/"
-              >
-                Go to Mumbai faucet
-              </a>
+              Ensure your wallet is on{" "}
+              <span className="uppercase">{dao.chain}</span> network.{" "}
             </p>
 
             <input
@@ -220,14 +198,24 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
               id=""
               placeholder="name of contract"
             />
-            {formData.contractName.length > 2 && formData.ownerName.length > 2 && (
+            {formData.contractName.length > 2 &&
+            formData.ownerName.length > 2 ? (
               <motion.button
                 whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3, }}
+                whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3 }}
                 onClick={() => buyContract()}
                 className="
                 p-2 text-xl bg-cyan-600 shadow-md hover:shadow-lg rounded-lg 
                  focus:outline-none"
+              >
+                Purchase Contract Ownership
+              </motion.button>
+            ) : (
+              <motion.button
+                disabled
+                className="
+                p-2 text-xl bg-cyan-600 shadow-md hover:shadow-lg rounded-lg 
+                 focus:outline-none disabled:opacity-40"
               >
                 Purchase Contract Ownership
               </motion.button>
@@ -241,6 +229,11 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
               Attempting TX
             </p>
           </div>
+        )}
+        {purchaseData.error.length > 1 ? (
+          <p className="text-th-accent-failure">{purchaseData.error}</p>
+        ) : (
+          <p className="text-th-accent-success"> No errors yet!</p>
         )}
         <ul className="list-disc list-inside space-y-6 text-base xl:text-xl">
           <li>
@@ -276,7 +269,7 @@ const Dao = ({ dao }: { dao: ICMSDao }) => {
           />
           <motion.button
             whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3, }}
+            whileTap={{ scale: 0.9, translateY: 2, rotateX: 25, skewX: 3 }}
             className="p-2 text-xl
                 bg-cyan-600
                 shadow-md hover:shadow-lg rounded-lg 
