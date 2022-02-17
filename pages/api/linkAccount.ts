@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Moralis from "moralis/node";
 import { ethers } from "ethers";
+import contractInterface from "../../public/DAO.sol/DAO.json";
+
 const serverUrl = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 const appId = process.env.NEXT_PUBLIC_MORALIS_APP_ID;
 const masterKey = process.env.MORALIS_MASTER_KEY;
@@ -8,35 +10,15 @@ const linkAccount = async (req: NextApiRequest, res: NextApiResponse) => {
   const NODE_URL_MATIC = `https://rpc-mainnet.maticvigil.com/v1/${process.env.MATIC_NODE}`;
   const NODE_URL_MUMBAI = `https://rpc-mumbai.maticvigil.com/v1/${process.env.MATIC_NODE}`;
 
-  const maticProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MATIC);
-  const mumbaiProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MUMBAI);
+  //? destructure req.body.
   const { ownerAddress, daoAddress, chain, version } = req.body;
 
-  const readableAbi = ["function isOwner(address memory) view returns(bool)"];
-  const abi = [
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      name: "isOwner",
-      outputs: [
-        {
-          internalType: "bool",
-          name: "",
-          type: "bool",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-  ];
+  //? Instantiate new contract + provider
+  const maticProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MATIC);
+  const mumbaiProvider = new ethers.providers.JsonRpcProvider(NODE_URL_MUMBAI);
   const contract = new ethers.Contract(
     daoAddress,
-    abi,
+    contractInterface.abi,
     chain === "matic" ? maticProvider : mumbaiProvider
   );
   Moralis.start({ serverUrl, appId, masterKey });
@@ -66,6 +48,7 @@ const linkAccount = async (req: NextApiRequest, res: NextApiResponse) => {
               if (contractResult === true) {
                 const UserObj = Moralis.Object.extend("LinkedDaos");
                 const userSession = new UserObj();
+                //todo - save dao name as well
                 userSession.set("daoAddress", daoAddress);
                 userSession.set("ownerAddress", ownerAddress);
                 userSession.set("chain", chain);
