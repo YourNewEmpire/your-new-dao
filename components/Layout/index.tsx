@@ -19,7 +19,7 @@ const Layout = ({ children }: Childs) => {
   return (
     <div className=" min-h-full bg-th-background ">
       <Head>
-        <title>Your New Dao </title>
+        <title>Your New NFTDAO</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap"
