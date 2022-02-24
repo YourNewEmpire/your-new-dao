@@ -39,7 +39,7 @@ const Modal = ({ handleClose, children }) => {
           whileTap={{ scale: 0.9 }}
           onClick={handleClose}
           className="
-            w-64 m-12 rounded-2xl font-semibold
+            w-64 m-12 rounded-2xl 
             bg-th-primary-medium 
             "
         >
