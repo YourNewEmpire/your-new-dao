@@ -14,7 +14,7 @@ const Nav = () => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   return (
-    <div className="bg-cyan-600 text-th-text font-body">
+    <div className="bg-th-primary-medium rounded-lg text-th-text font-body">
       <nav
         className="
                   flex items-center justify-around p-6 space-x-16 mx-0 xl:mx-12
